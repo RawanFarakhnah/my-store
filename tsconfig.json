@@ -13,7 +13,14 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    //Udacity Recommended
+    "noImplicitAny": true, //catches untyped variables
+    "noEmitOnError": true, //stops compilation if errors exist
+    "removeComments": false, //keeps comments in JS output
+    "forceConsistentCasingInFileNames": true, //avoids file name case bugs
+    "esModuleInterop": true, //makes imports from older JS modules work correctly
+    "verbatimModuleSyntax": false,//controls how imports are rewritten for CommonJS
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
