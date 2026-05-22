@@ -1,1 +1,5 @@
-<p>product-list works!</p>
+@for (product of products$ | async; track product) {
+  <ul>
+    <li>{{ product.name }}</li>
+  </ul>
+}

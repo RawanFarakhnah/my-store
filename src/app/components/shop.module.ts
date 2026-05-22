@@ -7,6 +7,7 @@ import { ProductItemDetailComponent } from './product-item-detail/product-item-d
 import { ProductItemComponent } from './product-item/product-item.component';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { CartComponent } from './cart/cart.component';
+import { NgbAccordionItem } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -16,10 +17,6 @@ import { CartComponent } from './cart/cart.component';
     ProductItemDetailComponent,
     ProductListComponent,
   ],
-   imports: [
-      CommonModule,
-      ShopRoutingModule,
-      FormsModule
-    ],
+  imports: [CommonModule, ShopRoutingModule, FormsModule, NgbAccordionItem],
 })
 export class ShopModule {}

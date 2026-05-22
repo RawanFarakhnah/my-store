@@ -8,20 +8,20 @@ import { ProductListComponent } from './product-list/product-list.component';
 const routes: Routes = [
   {
     path: '',
-    component: ProductListComponent
+    component: ProductListComponent,
   },
   {
     path: 'products/:id',
-    component: ProductItemDetailComponent
+    component: ProductItemDetailComponent,
   },
   {
     path: 'cart',
-    component: CartComponent
+    component: CartComponent,
   },
   {
     path: 'success',
-    component: ConfirmationComponent
-  }
+    component: ConfirmationComponent,
+  },
 ];
 
 @NgModule({
