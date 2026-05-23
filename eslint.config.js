@@ -46,6 +46,8 @@ module.exports = defineConfig([
       ],
 
       '@angular-eslint/prefer-standalone': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
     },
   },
 

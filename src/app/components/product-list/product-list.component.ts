@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CartService } from '../../services/cart-service';
-import { ProductModel } from '../../models/product-model';
-import { Observable } from 'rxjs/internal/Observable';
+import { CartService } from '../../services/cart.service';
+import { ProductModel } from '../../models/product.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class ProductListComponent implements OnInit {
   products$!: Observable<ProductModel[]>;
 
-  private cartService = inject(CartService);
+  cartService = inject(CartService);
 
   ngOnInit(): void {
     this.products$ = this.cartService.getProducts();

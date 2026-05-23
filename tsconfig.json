@@ -13,7 +13,8 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
     //Udacity Recommended
     "noImplicitAny": true, //catches untyped variables
     "strictNullChecks": true,
@@ -24,6 +25,7 @@
     "removeComments": false, //keeps comments in JS output
     "forceConsistentCasingInFileNames": true, //avoids file name case bugs
     "esModuleInterop": true, //makes imports from older JS modules work correctly
+    "resolveJsonModule": true, //allows importing JSON files as modules
     "verbatimModuleSyntax": false //controls how imports are rewritten for CommonJS
   },
   "angularCompilerOptions": {

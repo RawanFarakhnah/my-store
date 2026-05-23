@@ -22,6 +22,11 @@ const routes: Routes = [
     path: 'success',
     component: ConfirmationComponent,
   },
+  {
+    path: '**',
+    redirectTo: '',
+  },
+  
 ];
 
 @NgModule({
