@@ -1,34 +1,48 @@
 <div class="product-card card border-0 h-100">
-  
   <!-- image -->
   <a [routerLink]="['/products', product.id]" class="d-block">
-    <img [src]="product.url" 
-         loading="eager"
-         class="product-img" 
-         [alt]="product.name"
-         (error)="product.url = 'assets/placeholder.png'" />
+    <img
+      [src]="product.url"
+      loading="eager"
+      class="product-img"
+      [alt]="product.name"
+      (error)="product.url = 'assets/placeholder.png'"
+    />
   </a>
 
   <!-- Card body -->
   <div class="card-body d-flex flex-column">
-    
     <h5 class="product-title">{{ product.name }}</h5>
-    
+
     <p class="price mb-2">${{ product.price.toFixed(2) }}</p>
 
     <!-- Quantity Stepper (max 10) -->
     <div class="quantity-stepper mb-3">
-      <button type="button" class="stepper-btn" (click)="decrementQuantity()" [disabled]="quantity <= 1">−</button>
+      <button
+        type="button"
+        class="stepper-btn"
+        (click)="decrementQuantity()"
+        [disabled]="quantity <= 1"
+      >
+        −
+      </button>
       <span class="stepper-value">{{ quantity }}</span>
-      <button type="button" class="stepper-btn" (click)="incrementQuantity()" [disabled]="quantity >= 10">+</button>
+      <button
+        type="button"
+        class="stepper-btn"
+        (click)="incrementQuantity()"
+        [disabled]="quantity >= 10"
+      >
+        +
+      </button>
     </div>
 
     <!-- Actions -->
     <div class="mt-auto d-grid gap-2">
       <a class="btn btn-light details-btn" [routerLink]="['/products', product.id]">Details</a>
-      
+
       <button class="btn btn-primary add-btn" (click)="onAddToCart(product, quantity)">
-         Add to Cart
+        Add to Cart
       </button>
     </div>
   </div>

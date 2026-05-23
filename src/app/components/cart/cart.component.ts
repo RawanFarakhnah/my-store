@@ -3,6 +3,7 @@ import { CartService } from '../../services/cart.service';
 import { NgForm } from '@angular/forms';
 import { OrderModel } from '../../models/order.model';
 import { CartItemModel } from '../../models/cart-item.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -10,13 +11,14 @@ import { CartItemModel } from '../../models/cart-item.model';
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
 })
-export class CartComponent implements OnInit, OnDestroy{
+export class CartComponent implements OnInit, OnDestroy {
   cartItems: CartItemModel[] = [];
-  
+
   cartService = inject(CartService);
+  router = inject(Router);
 
   ngOnInit(): void {
-     this.cartItems = this.cartService.getCartItems();
+    this.cartItems = this.cartService.getCartItems();
   }
 
   ngOnDestroy(): void {
@@ -28,14 +30,14 @@ export class CartComponent implements OnInit, OnDestroy{
   }
 
   incrementQuantity(item: CartItemModel): void {
-   this.cartItems = this.cartService.increment(item);
+    this.cartItems = this.cartService.increment(item);
   }
 
   decrementQuantity(item: CartItemModel): void {
-   this.cartItems = this.cartService.decrement(item);
+    this.cartItems = this.cartService.decrement(item);
   }
 
-  getCartTotal(): number{
+  getCartTotal(): number {
     return this.cartService.getCartTotal();
   }
 
@@ -46,17 +48,21 @@ export class CartComponent implements OnInit, OnDestroy{
   submitOrder(form: NgForm): void {
     if (form.invalid || this.cartItems.length === 0) return;
 
-    const { fullName, address, creditCardNumber } =
-    form.form.getRawValue();
+    const { fullName, address, creditCardNumber } = form.form.getRawValue();
 
     const order: OrderModel = {
-    fullName,
-    address,
-    creditCardNumber,
-    cartItems: this.cartItems
-   };
+      fullName,
+      address,
+      creditCardNumber,
+      cartItems: this.cartItems,
+    };
 
-   console.log('ORDER:', order);
+    const orderSummary = this.cartService.placeOrder(order);
+
+    this.router
+      .navigate(['/success'], {
+        state: { orderSummary },
+      })
+      .catch(() => {});
   }
-  
 }

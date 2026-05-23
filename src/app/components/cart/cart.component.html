@@ -37,14 +37,18 @@
                     class="stepper-btn-cart"
                     [disabled]="item.quantity <= 1"
                     (click)="decrementQuantity(item)"
-                  >−</button>
+                  >
+                    −
+                  </button>
                   <span class="stepper-value-cart">{{ item.quantity }}</span>
                   <button
                     type="button"
                     class="stepper-btn-cart"
                     [disabled]="item.quantity >= 10"
                     (click)="incrementQuantity(item)"
-                  >+</button>
+                  >
+                    +
+                  </button>
                 </div>
               </div>
               <!-- Subtotal & Remove -->
@@ -81,7 +85,7 @@
             <span>Shipping</span>
             <span class="text-success">Free</span>
           </div>
-          <hr class="my-2">
+          <hr class="my-2" />
           <div class="d-flex justify-content-between fw-bold">
             <span>Total</span>
             <span class="text-primary">${{ getCartTotal().toFixed(2) }}</span>

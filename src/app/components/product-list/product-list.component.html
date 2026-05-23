@@ -1,13 +1,11 @@
-
 <div class="row mt-4">
   @for (product of (products$ | async) ?? []; track $index) {
-  <div class="col-md-3">
-    <app-product-item [product]="product" (addToCart)="addToCart($event)"></app-product-item>
-  </div>
+    <div class="col-md-3">
+      <app-product-item [product]="product" (addToCart)="addToCart($event)"></app-product-item>
+    </div>
   } @empty {
-  <div class="col-md-12">
-    <p>No products found</p>
-  </div>
+    <div class="col-md-12">
+      <p>No products found</p>
+    </div>
   }
 </div>
-

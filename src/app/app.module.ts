@@ -13,7 +13,7 @@ import { HeaderComponent } from './layout/header/header.component';
   declarations: [App, HeaderComponent],
   imports: [BrowserModule, AppRoutingModule, NgbModule],
   providers: [
-    provideBrowserGlobalErrorListeners(), 
+    provideBrowserGlobalErrorListeners(),
     provideHttpClient(),
     provideAnimations(),
     provideToastr({

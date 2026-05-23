@@ -1,1 +1,79 @@
-<p>product-item-detail works!</p>
+<div class="row mt-4 justify-content-center">
+  @if (product$ | async; as product) {
+    <div class="col-md-8 col-lg-7">
+      <!-- Back link -->
+      <div class="mb-3">
+        <a routerLink="/" class="text-muted text-decoration-none"> ← Back to products </a>
+      </div>
+
+      <!-- Product card - horizontal using row inside card -->
+      <div class="cart-item-card p-3">
+        <div class="row align-items-center g-4">
+          <!-- Image column -->
+          <div class="col-md-5 text-center">
+            <img
+              [src]="product.url"
+              class="product-detail-img rounded"
+              [alt]="product.name"
+              (error)="product.url = 'assets/placeholder.png'"
+            />
+          </div>
+
+          <!-- Details column -->
+          <div class="col-md-7">
+            <h2 class="h4 mb-2">{{ product.name }}</h2>
+            <p class="cart-item-price fs-3 mb-3">${{ product.price.toFixed(2) }}</p>
+
+            <!-- Description -->
+            <p class="text-muted small mb-4">
+              {{ product.description }}
+            </p>
+
+            <!-- Quantity stepper + total inline -->
+            <div class="d-flex align-items-center gap-3 mb-4 flex-wrap">
+              <span class="fw-semibold">Quantity:</span>
+              <div class="quantity-stepper-cart">
+                <button
+                  type="button"
+                  class="stepper-btn-cart"
+                  [disabled]="quantity <= 1"
+                  (click)="decrementQuantity()"
+                >
+                  −
+                </button>
+                <span class="stepper-value-cart">{{ quantity }}</span>
+                <button
+                  type="button"
+                  class="stepper-btn-cart"
+                  [disabled]="quantity >= 10"
+                  (click)="incrementQuantity()"
+                >
+                  +
+                </button>
+              </div>
+              <span class="fw-bold ms-auto">
+                Total: ${{ (product.price * quantity).toFixed(2) }}
+              </span>
+            </div>
+
+            <!-- Add to Cart button -->
+            <button class="btn btn-primary w-100 py-2" (click)="onAddToCart(product, quantity)">
+              Add to Cart — ${{ (product.price * quantity).toFixed(2) }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="col-md-12 text-center py-5">
+      <div class="empty-cart-card">
+        <div class="empty-cart-icon mb-3">🔍</div>
+        <h3 class="h5">Product not found</h3>
+        <p class="text-muted small mb-3">
+          The product you're looking for doesn't exist or has been removed.
+        </p>
+        <button class="btn btn-primary btn-sm" routerLink="/">← Back to products</button>
+      </div>
+    </div>
+  }
+</div>
