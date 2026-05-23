@@ -4,5 +4,4 @@ export interface ProductModel {
   price: number;
   url: string;
   description: string;
-  quantity?: number;
 }

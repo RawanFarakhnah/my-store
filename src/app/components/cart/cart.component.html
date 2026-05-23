@@ -1,1 +1,151 @@
-<p>cart works!</p>
+<div class="row mt-4">
+  @if (cartItems.length === 0) {
+    <!-- Empty state using your glass card style -->
+    <div class="col-12">
+      <div class="empty-cart-card text-center py-5">
+        <div class="empty-cart-icon mb-3">🛒</div>
+        <p class="mb-2">Your cart is empty</p>
+        <button class="btn btn-outline-primary btn-sm" routerLink="/">Continue shopping</button>
+      </div>
+    </div>
+  } @else {
+    <!-- LEFT: Cart Items -->
+    <div class="col-md-7">
+      <div class="cart-items-list">
+        @for (item of cartItems; track $index) {
+          <div class="cart-item-card">
+            <div class="row align-items-center g-3">
+              <!-- Image -->
+              <div class="col-3">
+                <img
+                  [src]="item.product.url"
+                  class="cart-item-img rounded"
+                  [alt]="item.product.name"
+                  (error)="item.product.url = 'assets/placeholder.png'"
+                />
+              </div>
+              <!-- Info -->
+              <div class="col-5">
+                <div class="cart-item-title">{{ item.product.name }}</div>
+                <div class="cart-item-price">${{ item.product.price.toFixed(2) }}</div>
+              </div>
+              <!-- Quantity stepper (modern, matches your product stepper) -->
+              <div class="col-2">
+                <div class="quantity-stepper-cart">
+                  <button
+                    type="button"
+                    class="stepper-btn-cart"
+                    [disabled]="item.quantity <= 1"
+                    (click)="decrementQuantity(item)"
+                  >−</button>
+                  <span class="stepper-value-cart">{{ item.quantity }}</span>
+                  <button
+                    type="button"
+                    class="stepper-btn-cart"
+                    [disabled]="item.quantity >= 10"
+                    (click)="incrementQuantity(item)"
+                  >+</button>
+                </div>
+              </div>
+              <!-- Subtotal & Remove -->
+              <div class="col-2 text-end">
+                <div class="cart-item-subtotal">
+                  ${{ (item.product.price * item.quantity).toFixed(2) }}
+                </div>
+                <button class="remove-item-btn" (click)="removeCartItem(item)">
+                  <i class="bi bi-trash3"></i> Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <!-- Optional: cart summary for mobile (simple) -->
+      <div class="d-lg-none mt-3 text-end">
+        <strong>Total: ${{ getCartTotal().toFixed(2) }}</strong>
+      </div>
+    </div>
+
+    <!-- RIGHT: Checkout Form -->
+    <div class="col-md-5">
+      <div class="checkout-card p-4">
+        <h5 class="mb-3">Checkout</h5>
+
+        <!-- Order summary -->
+        <div class="order-summary mb-4">
+          <div class="d-flex justify-content-between mb-2">
+            <span>Subtotal ({{ getTotalItemsCount() }} items)</span>
+            <span>${{ getCartTotal().toFixed(2) }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Shipping</span>
+            <span class="text-success">Free</span>
+          </div>
+          <hr class="my-2">
+          <div class="d-flex justify-content-between fw-bold">
+            <span>Total</span>
+            <span class="text-primary">${{ getCartTotal().toFixed(2) }}</span>
+          </div>
+        </div>
+
+        <form #form="ngForm" (ngSubmit)="submitOrder(form)">
+          <div class="mb-3">
+            <label for="fullName" class="form-label small">Full name</label>
+            <input
+              ngModel
+              name="fullName"
+              #fullName="ngModel"
+              class="form-control form-control-sm"
+              required
+              minlength="3"
+            />
+            @if (fullName.invalid && fullName.touched) {
+              <div class="text-danger small">Name required (min 3 chars)</div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="address" class="form-label small">Address</label>
+            <input
+              ngModel
+              name="address"
+              #address="ngModel"
+              class="form-control form-control-sm"
+              required
+              minlength="6"
+            />
+            @if (address.invalid && address.touched) {
+              <div class="text-danger small">Address required (min 6 chars)</div>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label for="creditCardNumber" class="form-label small">Credit card number</label>
+            <input
+              ngModel
+              name="creditCardNumber"
+              #card="ngModel"
+              class="form-control form-control-sm"
+              required
+              minlength="16"
+              maxlength="16"
+              pattern="[0-9]*"
+            />
+            @if (card.invalid && card.touched) {
+              <div class="text-danger small">16-digit number</div>
+            }
+            <small class="text-muted">We never store your payment details.</small>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary w-100"
+            [disabled]="form.invalid || cartItems.length === 0"
+          >
+            Place order • ${{ getCartTotal().toFixed(2) }}
+          </button>
+        </form>
+      </div>
+    </div>
+  }
+</div>
