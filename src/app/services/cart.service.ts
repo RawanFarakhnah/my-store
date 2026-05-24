@@ -6,14 +6,17 @@ import { CartItemModel } from '../models/cart-item.model';
 import { map } from 'rxjs';
 import { OrderModel } from '../models/order.model';
 import { OrderSummary } from '../models/order-summary.model';
+import { signal, computed } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  cart: CartItemModel[] = [];
+  cart = signal<CartItemModel[]>([]);
 
   httpService = inject(HttpClient);
+
+  cartCount = computed(() => this.cart().reduce((count, item) => count + item.quantity, 0));
 
   getProducts(): Observable<ProductModel[]> {
     return this.httpService.get<ProductModel[]>('assets/data.json');
@@ -24,60 +27,70 @@ export class CartService {
   }
 
   getCartItems(): CartItemModel[] {
-    return this.cart;
+    return this.cart();
   }
 
   addCartItem(input: CartItemModel) {
-    const index = this.cart.findIndex((i) => i.product.id === input.product.id);
+    const current = this.cart();
+
+    const index = current.findIndex((i) => i.product.id === input.product.id);
 
     if (index !== -1) {
       // update existing item
-      this.cart[index] = {
-        ...this.cart[index],
-        quantity: this.cart[index].quantity + input.quantity,
+      current[index] = {
+        ...current[index],
+        quantity: current[index].quantity + input.quantity,
       };
     } else {
       // add new item
-      this.cart.unshift(input);
+      current.unshift(input);
     }
+
+    this.cart.set([...current]);
   }
 
   removeCartItem(item: CartItemModel): CartItemModel[] {
-    this.cart = this.cart.filter((i) => i.product.id !== item.product.id);
+    this.cart.set(this.cart().filter((i) => i.product.id !== item.product.id));
 
-    return this.cart;
+    return this.cart();
   }
 
   increment(item: CartItemModel): CartItemModel[] {
-    const found = this.cart.find((i) => i.product.id === item.product.id);
+    const current = this.cart();
+
+    const found = current.find((i) => i.product.id === item.product.id);
     if (found) found.quantity++;
 
-    return this.cart;
+    return current;
   }
 
   decrement(item: CartItemModel): CartItemModel[] {
-    const found = this.cart.find((i) => i.product.id === item.product.id);
-    if (!found) return this.cart;
+    const current = this.cart();
+
+    const found = current.find((i) => i.product.id === item.product.id);
+    if (!found) return current;
 
     found.quantity--;
+
+    this.cart.set([...current]);
 
     if (found.quantity <= 0) {
       this.removeCartItem(item);
     }
 
-    return this.cart;
+    return current;
   }
 
   getCartTotal(): number {
-    return this.cart.reduce((t, i) => t + i.product.price * i.quantity, 0);
+    return this.cart().reduce((t, i) => t + i.product.price * i.quantity, 0);
   }
 
   getTotalItemsCount(): number {
-    return this.cart.reduce((c, i) => c + i.quantity, 0);
+    return this.cart().reduce((c, i) => c + i.quantity, 0);
   }
 
   clearCart(): void {
-    this.cart = [];
+    this.cart.set([]);
   }
 
   placeOrder(order: OrderModel): OrderSummary {
