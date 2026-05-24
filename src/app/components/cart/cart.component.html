@@ -40,7 +40,17 @@
                   >
                     −
                   </button>
-                  <span class="stepper-value-cart">{{ item.quantity }}</span>
+
+                  <input
+                    type="number"
+                    class="stepper-input-cart"
+                    [(ngModel)]="item.quantity"
+                    (ngModelChange)="onQuantityChange(item, $event)"
+                    readonly
+                    min="1"
+                    max="10"
+                  />
+
                   <button
                     type="button"
                     class="stepper-btn-cart"

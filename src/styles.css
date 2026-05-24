@@ -352,6 +352,33 @@ body {
   font-weight: 600;
 }
 
+.stepper-input-cart {
+  width: 32px;
+  text-align: center;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 0;
+  appearance: textfield;
+}
+
+.stepper-input-cart::-webkit-outer-spin-button,
+.stepper-input-cart::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+stepper-input-cart:focus {
+  outline: none;
+  border-bottom: 2px solid var(--primary);
+}
+
+.stepper-input-cart:focus {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+}
+
 .cart-item-subtotal {
   font-weight: 700;
   font-size: 1.1rem;

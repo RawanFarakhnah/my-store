@@ -55,22 +55,13 @@ export class CartService {
     return this.cart();
   }
 
-  increment(item: CartItemModel): CartItemModel[] {
-    const current = this.cart();
-
-    const found = current.find((i) => i.product.id === item.product.id);
-    if (found) found.quantity++;
-
-    return current;
-  }
-
-  decrement(item: CartItemModel): CartItemModel[] {
+  updateQuantity(item: CartItemModel, value: number): CartItemModel[] {
     const current = this.cart();
 
     const found = current.find((i) => i.product.id === item.product.id);
     if (!found) return current;
 
-    found.quantity--;
+    found.quantity = value;
 
     this.cart.set([...current]);
 

@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { OrderModel } from '../../models/order.model';
 import { CartItemModel } from '../../models/cart-item.model';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cart',
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 export class CartComponent implements OnInit, OnDestroy {
   cartItems: CartItemModel[] = [];
 
+  toastrService = inject(ToastrService);
   cartService = inject(CartService);
   router = inject(Router);
 
@@ -27,14 +29,22 @@ export class CartComponent implements OnInit, OnDestroy {
 
   removeCartItem(item: CartItemModel): void {
     this.cartItems = this.cartService.removeCartItem(item);
+
+    this.toastrService.success(`${item.product.name} was removed from the cart.`, 'Cart Updated');
+  }
+
+  onQuantityChange(item: CartItemModel, value: number): void {
+    const newValue = Math.max(1, Math.min(10, Number(value)));
+
+    this.cartItems = this.cartService.updateQuantity(item, newValue);
   }
 
   incrementQuantity(item: CartItemModel): void {
-    this.cartItems = this.cartService.increment(item);
+    this.onQuantityChange(item, item.quantity + 1);
   }
 
   decrementQuantity(item: CartItemModel): void {
-    this.cartItems = this.cartService.decrement(item);
+    this.onQuantityChange(item, item.quantity - 1);
   }
 
   getCartTotal(): number {
